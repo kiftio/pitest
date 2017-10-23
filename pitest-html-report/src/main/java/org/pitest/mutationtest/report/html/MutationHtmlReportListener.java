@@ -14,19 +14,6 @@
  */
 package org.pitest.mutationtest.report.html;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.pitest.classinfo.ClassInfo;
@@ -42,6 +29,19 @@ import org.pitest.util.IsolationUtils;
 import org.pitest.util.Log;
 import org.pitest.util.ResultOutputStrategy;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+
 public class MutationHtmlReportListener implements MutationResultListener {
 
   private final ResultOutputStrategy      outputStrategy;
@@ -53,6 +53,7 @@ public class MutationHtmlReportListener implements MutationResultListener {
   private final Set<String>               mutatorNames;
 
   private final String                    css;
+  private final String                    js;
 
   public MutationHtmlReportListener(final CoverageDatabase coverage,
       final ResultOutputStrategy outputStrategy,
@@ -61,15 +62,16 @@ public class MutationHtmlReportListener implements MutationResultListener {
     this.outputStrategy = outputStrategy;
     this.sourceRoots = new HashSet<SourceLocator>(Arrays.asList(locators));
     this.mutatorNames = new HashSet<String>(mutatorNames);
-    this.css = loadCss();
+    this.css = loadFile("templates/mutation/style.css");
+    this.js = loadFile("templates/mutation/treemap.js");
   }
 
-  private String loadCss() {
+  private String loadFile(String file) {
     try {
       return FileUtil.readToString(IsolationUtils.getContextClassLoader()
-          .getResourceAsStream("templates/mutation/style.css"));
+          .getResourceAsStream(file));
     } catch (IOException e) {
-      Log.getLogger().log(Level.SEVERE, "Error while loading css", e);
+      Log.getLogger().log(Level.SEVERE, "Error while loading file", e);
     }
     return "";
   }
@@ -84,9 +86,7 @@ public class MutationHtmlReportListener implements MutationResultListener {
       final Writer writer = this.outputStrategy.createWriterForFile(fileName);
 
       final StringTemplateGroup group = new StringTemplateGroup("mutation_test");
-      final StringTemplate st = group
-          .getInstanceOf("templates/mutation/mutation_report");
-      st.setAttribute("css", this.css);
+      final StringTemplate st = group.getInstanceOf("templates/mutation/mutation_report");
 
       st.setAttribute("tests", mutationMetaData.getTests());
 
@@ -181,14 +181,15 @@ public class MutationHtmlReportListener implements MutationResultListener {
 
   public void onRunEnd() {
     createIndexPages();
-    createCssFile();
+    createFile(css, "style.css");
+    createFile(js, "treemap.js");
   }
 
-  private void createCssFile() {
-    final Writer cssWriter = this.outputStrategy.createWriterForFile("style.css");
+  private void createFile(String contents, String fileName) {
+    final Writer fileWriter = this.outputStrategy.createWriterForFile(fileName);
     try {
-      cssWriter.write(css);
-      cssWriter.close();
+      fileWriter.write(contents);
+      fileWriter.close();
     } catch (final IOException e) {
       e.printStackTrace();
     }
@@ -242,13 +243,13 @@ public class MutationHtmlReportListener implements MutationResultListener {
   @Override
   public void runStart() {
     // TODO Auto-generated method stub
-
   }
 
   @Override
   public void runEnd() {
     createIndexPages();
-    createCssFile();
+    createFile(css, "style.css");
+    createFile(js, "treemap.js");
   }
 
   @Override
