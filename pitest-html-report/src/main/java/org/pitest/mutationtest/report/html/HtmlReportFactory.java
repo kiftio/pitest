@@ -15,11 +15,11 @@
 
 package org.pitest.mutationtest.report.html;
 
-import java.util.Properties;
-
 import org.pitest.mutationtest.ListenerArguments;
 import org.pitest.mutationtest.MutationResultListener;
 import org.pitest.mutationtest.MutationResultListenerFactory;
+
+import java.util.Properties;
 
 public class HtmlReportFactory implements MutationResultListenerFactory {
 
@@ -28,7 +28,7 @@ public class HtmlReportFactory implements MutationResultListenerFactory {
       ListenerArguments args) {
     return new MutationHtmlReportListener(args.getCoverage(),
         args.getOutputStrategy(), args.getEngine().getMutatorNames(),
-        Boolean.valueOf((String)props.getOrDefault("displayTreeMap", "false")),
+        Boolean.valueOf((String) props.get("displayTreeMap")),
         args.getLocator());
   }
 
