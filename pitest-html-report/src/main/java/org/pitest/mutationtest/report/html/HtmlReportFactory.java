@@ -28,6 +28,7 @@ public class HtmlReportFactory implements MutationResultListenerFactory {
       ListenerArguments args) {
     return new MutationHtmlReportListener(args.getCoverage(),
         args.getOutputStrategy(), args.getEngine().getMutatorNames(),
+        Boolean.valueOf((String)props.getOrDefault("displayTreeMap", "false")),
         args.getLocator());
   }
 

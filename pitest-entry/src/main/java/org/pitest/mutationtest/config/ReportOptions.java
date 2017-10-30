@@ -125,6 +125,8 @@ public class ReportOptions {
   private Properties                     properties;
 
   private int maxSurvivors;
+
+  private boolean                        displayTreeMap                 = false;
   
   private Collection<String>             excludedRunners                = new ArrayList<String>();
 
@@ -564,6 +566,14 @@ public class ReportOptions {
     this.excludedRunners = excludedRunners;
   }
 
+  public boolean isDisplayTreeMap() {
+    return displayTreeMap;
+  }
+
+  public void setDisplayTreeMap(boolean displayTreeMap) {
+    this.displayTreeMap = displayTreeMap;
+  }
+
   @Override
   public String toString() {
     return "ReportOptions [targetClasses=" + targetClasses
@@ -589,7 +599,7 @@ public class ReportOptions {
         + mutationEngine + ", javaExecutable=" + javaExecutable
         + ", includeLaunchClasspath=" + includeLaunchClasspath
         + ", properties=" + properties + ", maxSurvivors=" + maxSurvivors + ", excludedRunners=" + excludedRunners 
-        + ", features=" + features + "]";
+        + ", features=" + features + ", displayTreeMap=" + displayTreeMap + "]";
   }
   
 }

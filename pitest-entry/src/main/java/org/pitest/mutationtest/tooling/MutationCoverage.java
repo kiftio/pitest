@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -189,7 +190,7 @@ private int numberOfThreads() {
             this.data.getSourceDirs()), engine, t0);
 
     final MutationResultListener mutationReportListener = this.strategies
-        .listenerFactory().getListener(this.data.getFreeFormProperties(), args);
+        .listenerFactory().getListener(getProperties(), args);
 
     ls.add(mutationReportListener);
     ls.add(new HistoryListener(history()));
@@ -320,5 +321,10 @@ private int numberOfThreads() {
     };
   }
 
-  
+  private Properties getProperties() {
+    final Properties props = this.data.getFreeFormProperties() != null ? this.data.getFreeFormProperties() : new Properties();
+    props.setProperty("displayTreeMap", String.valueOf(this.data.isDisplayTreeMap()));
+    return props;
+  }
+
 }

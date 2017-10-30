@@ -192,7 +192,12 @@ public enum ConfigOption {
   /**
    * Custom properties for plugins
    */
-  PLUGIN_CONFIGURATION("pluginConfiguration");
+  PLUGIN_CONFIGURATION("pluginConfiguration"),
+
+  /**
+   * Flag to indicate if TreeMap should be displayed in HTML report
+   */
+  DISPLAY_TREE_MAP("displayTreeMap", false);
 
   private final String       text;
   private final Serializable defaultValue;

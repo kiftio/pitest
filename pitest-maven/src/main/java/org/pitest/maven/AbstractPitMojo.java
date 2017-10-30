@@ -321,6 +321,12 @@ public class AbstractPitMojo extends AbstractMojo {
   @Parameter(property = "plugin.artifactMap", readonly = true, required = true)
   private Map<String, Artifact>       pluginArtifactMap;
 
+  /**
+   * Display TreeMap in HTML report
+   */
+  @Parameter(defaultValue = "false", property = "displayTreeMap")
+  private boolean                     displayTreeMap;
+
   protected final GoalStrategy        goalStrategy;
 
   public AbstractPitMojo() {
@@ -605,6 +611,10 @@ public class AbstractPitMojo extends AbstractMojo {
   
   public ArrayList<String> getFeatures() {
     return features;
+  }
+
+  public boolean isDisplayTreeMap() {
+    return this.displayTreeMap;
   }
 
   static class RunDecision {

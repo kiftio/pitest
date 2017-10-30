@@ -21,6 +21,7 @@ import static org.pitest.mutationtest.config.ConfigOption.CLASSPATH_FILE;
 import static org.pitest.mutationtest.config.ConfigOption.CODE_PATHS;
 import static org.pitest.mutationtest.config.ConfigOption.COVERAGE_THRESHOLD;
 import static org.pitest.mutationtest.config.ConfigOption.DEPENDENCY_DISTANCE;
+import static org.pitest.mutationtest.config.ConfigOption.DISPLAY_TREE_MAP;
 import static org.pitest.mutationtest.config.ConfigOption.EXCLUDED_CLASSES;
 import static org.pitest.mutationtest.config.ConfigOption.EXCLUDED_GROUPS;
 import static org.pitest.mutationtest.config.ConfigOption.EXCLUDED_METHOD;
@@ -122,6 +123,7 @@ public class OptionsParser {
   private final ArgumentAcceptingOptionSpec<Boolean> exportLineCoverageSpec;
   private final OptionSpec<String>                   javaExecutable;
   private final OptionSpec<KeyValuePair>             pluginPropertiesSpec;
+  private final ArgumentAcceptingOptionSpec<Boolean> displayTreeMapSpec;
 
   private final ArgumentAcceptingOptionSpec<Boolean> includeLaunchClasspathSpec;
 
@@ -319,6 +321,10 @@ public class OptionsParser {
         .withRequiredArg().ofType(KeyValuePair.class)
         .describedAs("custom plugin properties");
 
+    this.displayTreeMapSpec = parserAccepts(DISPLAY_TREE_MAP).withOptionalArg()
+        .ofType(Boolean.class).defaultsTo(true)
+        .describedAs("whether or not to display tree map in HTML report");
+
   }
 
   private OptionSpecBuilder parserAccepts(final ConfigOption option) {
@@ -397,6 +403,8 @@ public class OptionsParser {
 
     data.setExportLineCoverage(userArgs.has(this.exportLineCoverageSpec)
         && userArgs.valueOf(this.exportLineCoverageSpec));
+    data.setDisplayTreeMap(userArgs.has(this.displayTreeMapSpec)
+        && userArgs.valueOf(this.displayTreeMapSpec));
 
     setClassPath(userArgs, data);
 

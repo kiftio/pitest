@@ -51,19 +51,19 @@ public class MutationHtmlReportListener implements MutationResultListener {
   private final PackageSummaryMap         packageSummaryData = new PackageSummaryMap();
   private final CoverageDatabase          coverage;
   private final Set<String>               mutatorNames;
+  private final boolean                   displayTreeMap;
 
   private final String                    css;
-  private final String                    js;
 
   public MutationHtmlReportListener(final CoverageDatabase coverage,
       final ResultOutputStrategy outputStrategy,
-      Collection<String> mutatorNames, final SourceLocator... locators) {
+      Collection<String> mutatorNames, boolean displayTreeMap, final SourceLocator... locators) {
     this.coverage = coverage;
     this.outputStrategy = outputStrategy;
     this.sourceRoots = new HashSet<SourceLocator>(Arrays.asList(locators));
     this.mutatorNames = new HashSet<String>(mutatorNames);
+    this.displayTreeMap = displayTreeMap;
     this.css = loadFile("templates/mutation/style.css");
-    this.js = loadFile("templates/mutation/treemap.js");
   }
 
   private String loadFile(String file) {
@@ -182,7 +182,9 @@ public class MutationHtmlReportListener implements MutationResultListener {
   public void onRunEnd() {
     createIndexPages();
     createFile(css, "style.css");
-    createFile(js, "treemap.js");
+    if (displayTreeMap) {
+      createFile(loadFile("templates/mutation/treemap.js"), "treemap.js");
+    }
   }
 
   private void createFile(String contents, String fileName) {
@@ -212,6 +214,7 @@ public class MutationHtmlReportListener implements MutationResultListener {
       createPackageIndexPage(psData);
     }
 
+    st.setAttribute("displayTreeMap", displayTreeMap);
     st.setAttribute("totals", totals);
     st.setAttribute("packageSummaries", psd);
     try {
@@ -249,7 +252,9 @@ public class MutationHtmlReportListener implements MutationResultListener {
   public void runEnd() {
     createIndexPages();
     createFile(css, "style.css");
-    createFile(js, "treemap.js");
+    if (displayTreeMap) {
+      createFile(loadFile("templates/mutation/treemap.js"), "treemap.js");
+    }
   }
 
   @Override

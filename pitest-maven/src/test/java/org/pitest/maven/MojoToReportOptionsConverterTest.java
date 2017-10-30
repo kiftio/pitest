@@ -372,6 +372,16 @@ public class MojoToReportOptionsConverterTest extends BasePitMojoTest {
         any(Xpp3Dom.class));
   }
 
+  public void testDefaultsDisplayTreeMapToFalse() {
+    final ReportOptions actual = parseConfig("");
+    assertEquals(false, actual.isDisplayTreeMap());
+  }
+
+  public void testParsesDisplayTreeMap() {
+    final ReportOptions actual = parseConfig("<displayTreeMap>true</displayTreeMap>");
+    assertEquals(true, actual.isDisplayTreeMap());
+  }
+
   public void testParsesCustomProperties() {
     final ReportOptions actual = parseConfig("<pluginConfiguration><foo>foo</foo><bar>bar</bar></pluginConfiguration>");
     assertEquals("foo", actual.getFreeFormProperties().get("foo"));

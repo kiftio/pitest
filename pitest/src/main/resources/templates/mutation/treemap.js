@@ -115,7 +115,7 @@ PitestTreeMap.prototype.draw = function(containerId, size, root) {
             .datum(d.parent)
             .on("click", transition)
             .select("text")
-            .text(name(d));
+            .text(name(d).replace(/^\./, ''));
 
         var g1 = svg.insert("g", ".grandparent")
             .datum(d)
@@ -221,7 +221,7 @@ PitestTreeMap.prototype.draw = function(containerId, size, root) {
     function name(d) {
         return d.parent
             ? name(d.parent) + "." + d.name
-            : d.name;
+            : d.name.replace(/^root/, '');
     }
 };
 

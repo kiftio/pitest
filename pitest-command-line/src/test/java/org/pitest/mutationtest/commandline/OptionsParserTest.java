@@ -501,6 +501,12 @@ public class OptionsParserTest {
     assertEquals("2", actual.getFreeFormProperties().getProperty("bar"));
   }
 
+  @Test
+  public void shouldParseDisplayTreeMapFlag() {
+    final ReportOptions actual = parseAddingRequiredArgs("--displayTreeMap");
+    assertTrue(actual.isDisplayTreeMap());
+  }
+
   private String getNonCanonicalGregorEngineClassPath() {
     final String gregorEngineClassPath = GregorMutationEngine.class
         .getProtectionDomain().getCodeSource().getLocation().getFile();
